@@ -2,9 +2,24 @@
 
 A Python tool that generates obfuscated XSS payloads to bypass character-based Web Application Firewall (WAF) filters.
 
-## What It Does
+[![Python](https://img.shields.io/badge/Python-3.6%2B-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Purpose](https://img.shields.io/badge/Purpose-Educational%20Only-red)](#)
+
+## Overview
 
 This toolkit tests XSS payloads against simulated WAF regex rules and applies multiple evasion techniques to find bypasses. It demonstrates how simple pattern-matching WAFs can be circumvented using encoding and obfuscation.
+
+## Screenshots
+
+### Automated Evasion Tests
+![Automated Tests](screenshots/screenshot1.png)
+
+### Results Summary
+![Results](screenshots/screenshot2.png)
+
+### Interactive Mode
+![Interactive](screenshots/screenshot3.png)
 
 ## Evasion Techniques
 
@@ -44,36 +59,27 @@ This toolkit tests XSS payloads against simulated WAF regex rules and applies mu
 python waf_bypass.py
 ```
 
-### Output
-
-```
-======================================================================
-  XSS Payload Obfuscator — Filter Evasion Toolkit
-======================================================================
-
-  [Basic Script]
-    Original: <script>alert('XSS')</script>
-    Blocked by: ScriptTag, AlertFunc
-    >> EVASION via HTML Entity Encoding
-       Payload: <&#115;cript>alert(&#39;XSS&#39;)&#60;/&#115;cript>
-  ...
-======================================================================
-  TOTAL TESTS: 10
-  Evaded:      10
-  Caught:      0
-  Success:     100.0%
-======================================================================
-```
-
 ## Interactive Mode
 
 After automated tests, enter your own payloads:
 
 ```
-Payload> <script>alert(1)</script>
+Payload> <script>alert('XSS')</script>
 Blocked by: ScriptTag, AlertFunc
-Evaded with Case Randomization: <ScRiPt>alert(1)</ScRiPt>
+>> EVASION via Case Randomization: <ScRiPt>alert('XSS')</ScRiPt>
+
+Payload> <img src=x onerror=alert(1)>
+Blocked by: EventHandler, ImgOnEvent, AlertFunc
+>> EVASION via Null Byte Injection: <img src=x on\x00error=alert(1)>
 ```
+
+## How It Works
+
+1. **Filter Rules** — Regex patterns simulate common WAF signatures
+2. **Base Payloads** — 10 standard XSS attack vectors
+3. **Evasion Engine** — Applies 11 obfuscation techniques to each payload
+4. **Verification** — Checks if transformed payload bypasses all rules
+5. **Interactive Mode** — Test custom payloads against the filter
 
 ## Limitations
 
@@ -85,9 +91,17 @@ Evaded with Case Randomization: <ScRiPt>alert(1)</ScRiPt>
 
 ```
 wafevasion/
-├── waf_bypass.py   # Main evasion toolkit
-└── README.md       # Documentation
+├── waf_bypass.py      # Main evasion toolkit
+├── screenshots/       # Output screenshots
+│   ├── screenshot1.png
+│   ├── screenshot2.png
+│   └── screenshot3.png
+└── README.md          # This documentation
 ```
+
+## Disclaimer
+
+This tool is for educational and authorized security testing purposes only. Unauthorized use against systems you don't own or have explicit permission to test is illegal.
 
 ## License
 
